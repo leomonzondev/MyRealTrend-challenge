@@ -1,0 +1,171 @@
+
+.header h1 {
+  font-weight: 800;
+  font-size: 2rem;
+  margin: 0;
+
+}
+
+.header h3 {
+  font-weight: 300;
+  font-size: 1.25rem;
+  margin: 0;
+
+}
+
+.form input {
+  width: 600px;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 20%);
+  height: 39px;
+  padding: 7px 60px 9px 15px;
+  border-style: none;
+}
+
+.form input:focus {
+  outline: none;
+}
+
+.imageContainer {
+  width: 256px;
+  height: 256px;
+  background-color: rgb(201, 201, 201);
+  cursor: pointer;
+
+}
+
+.imageContainer img {
+  width: 100%;
+
+}
+
+.msgBox {
+  border: 1px solid rgb(206, 206, 206);
+  width: 256px;
+  height: 150px;
+}
+
+.searcherContainer {
+
+  max-width: 1200px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: rgb(223, 223, 223);
+}
+
+.container {
+  width: 100%;
+}
+
+.containerApp {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+
+
+.wrapper {
+  gap: 70px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+
+  padding: 50px;
+
+}
+
+
+.full {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.card {
+  padding: 7px 10px 10px 10px;
+  width: 280px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+
+}
+
+.card h1 {
+  overflow: hidden;
+  height: 75px;
+
+  line-height: 35px;
+  text-align: center;
+}
+
+.card h3 {
+  height: 20px;
+}
+
+.percentage {
+
+  max-width: 345px;
+  max-height: 700px;
+  width: 320px;
+  transition: all 1s;
+  position: absolute;
+  bottom: 0;
+  margin: 0 auto;
+
+}
+
+
+.controls {
+ z-index: 3;
+}
+
+.controls button {
+  background-color: #c9e9dd;
+}
+
+.stop{
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(109, 109, 109, 0.651);
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stop h1 {
+  font-size: 6rem;
+  user-select: none;
+}
+
+
+.msgBox {
+display: flex;
+justify-content: space-between;
+flex-direction: column;
+}
+
+.msgBoxMessage {
+
+
+}
+
+.msgBoxForm input {
+  width: 100%;
+}
