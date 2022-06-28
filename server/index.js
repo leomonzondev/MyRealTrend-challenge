@@ -6,7 +6,11 @@ import { isStringObject } from 'util/types'
 
 
 const app = express()
+
+app.use(express.static( "public"))
+
 const puerto = process.env.PORT || 3001
+
 
 const server = http.createServer(app)
 
@@ -140,5 +144,5 @@ io.on('connection', socket => {
 
 
 server.listen(puerto, () => {
-    console.log(`SV running on port ${PORT}`)
+    console.log(`SV running on port ${puerto}`)
 })

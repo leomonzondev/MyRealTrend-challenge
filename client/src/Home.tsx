@@ -6,16 +6,35 @@ import CardState, { CardContext } from "./context/State";
 
 import styles from "./Home.module.css";
 import { Products } from "./Products";
+import { ICard, IProduct } from '../interfaces/IProduct';
 
 const socket = io("http://localhost:3001");
 
+
+
+type cardProduct = {
+
+  productA?: ICard;
+  productB?: ICard;
+}
+
+type percentage = {
+  perA?: number;
+  perB?: number;
+}
+
+type votacion = {
+  voteA?: number;
+  voteB?: number;
+}
+
 const Home: React.FC = () => {
 
-  const [lista, setLista] = useState('')
+  const [lista, setLista] = useState<any[] | null>(null)
   const [input, setInput] = useState('')
-  const [votacion, setVotacion] = useState({})
-  const [cardProduct, setcardProduct] = useState({})
-  const [percentage, setPercentage] = useState({})
+  const [votacion, setVotacion] = useState<votacion | null>(null)
+  const [cardProduct, setcardProduct] = useState<cardProduct | null>(null)
+  const [percentage, setPercentage] = useState<percentage | null>(null)
   const [btnState, setBtnState] = useState(false)
 
   
@@ -43,7 +62,7 @@ const Home: React.FC = () => {
     
     socket.on('vote', candidates => {
       setVotacion(candidates)
-      console.log(votacion.voteA);
+
     })
 
     socket.on('item', products => {
@@ -72,7 +91,7 @@ const Home: React.FC = () => {
     socket.emit('pause', btnState)
   }
 
-  const selectItem = (clientProduct) => {
+  const selectItem = (clientProduct:any) => {
     socket.emit('loadProduct', clientProduct)
 
   }
@@ -87,7 +106,7 @@ const Home: React.FC = () => {
 
 
   useEffect(() => {
-    setPercentage({perA: votacion.voteA / (votacion.voteA + votacion.voteB ) * 100 , perB: votacion.voteB / (votacion.voteA + votacion.voteB ) * 100 })
+    setPercentage({perA: votacion?.voteA! / (votacion?.voteA! + votacion?.voteB! ) * 100 , perB: votacion?.voteB! / (votacion?.voteA! + votacion?.voteB!) * 100 })
 
   },[votacion])
  
@@ -112,7 +131,7 @@ const Home: React.FC = () => {
         {
           lista && <div className={styles.searcherContainer}>
             {
-              lista.map((product) => (
+              lista.map((product: IProduct) => (
               <div key={product.id} onClick={() => selectItem(product)} >
                 <Products img={product.thumbnail} title={product.title} price={product.price}/>
               </div>))
@@ -132,11 +151,11 @@ const Home: React.FC = () => {
         <div className={`${ btnState ? styles.stop : ''  }`}>{ btnState && <h1>VOTACIÓN EN PAUSA</h1>}</div>
       <div className={styles.wrapper}>
         <div className={styles.full}>
-          <div className={styles.percentage} style={{ height: `${percentage.perA}%`, backgroundColor: `hsl(${percentage.perA}, 100%, 50%)`}} ></div>
+          <div className={styles.percentage} style={{ height: `${percentage!.perA}%`, backgroundColor: `hsl(${percentage!.perA}, 100%, 50%)`}} ></div>
             <div className={styles.card}>
             
-                <h1>{cardProduct.productA?.title ? cardProduct.productA?.title : 'Product A title'}</h1>
-                <h3>{cardProduct.productA?.description ? cardProduct.productA?.description : 'Product A description'}</h3>
+                <h1>{cardProduct!.productA?.title ? cardProduct!.productA?.title : 'Product A title'}</h1>
+                <h3>{cardProduct!.productA?.description ? cardProduct!.productA?.description : 'Product A description'}</h3>
                 <div className={styles.imageContainer} onClick={() => vote(0)} >
                   <img src={`${cardProduct ? cardProduct.productA?.image : ''  }`}/>
                 </div>
@@ -155,15 +174,15 @@ const Home: React.FC = () => {
 
         
           <div className={styles.full}>
-          <div className={styles.percentage}  style={{ height: `${percentage.perB}%`, backgroundColor: `hsl(${percentage.perB}, 100%, 50%)`}} ></div>
+          <div className={styles.percentage}  style={{ height: `${percentage!.perB}%`, backgroundColor: `hsl(${percentage!.perB}, 100%, 50%)`}} ></div>
             <div className={styles.card}>
 
-              <h1>{cardProduct.productB?.title ? cardProduct.productB?.title : 'Product B title'}</h1>
-              <h3>{cardProduct.productB?.description ? cardProduct.productB?.description : 'Product B description'}</h3>
+              <h1>{cardProduct!.productB?.title ? cardProduct!.productB?.title : 'Product B title'}</h1>
+              <h3>{cardProduct!.productB?.description ? cardProduct!.productB?.description : 'Product B description'}</h3>
               <div className={styles.imageContainer} onClick={() => vote(1)}>
               <img src={`${cardProduct ? cardProduct.productB?.image : ''  }`}/>
               </div>
-              <p>{votacion.voteB > 0 ? votacion.voteB : '0'}  voto(s)</p>
+              <p>{votacion?.voteB! > 0 ? votacion?.voteB : '0'}  voto(s)</p>
               <div className={styles.msgBox}></div>
             </div>
             </div>

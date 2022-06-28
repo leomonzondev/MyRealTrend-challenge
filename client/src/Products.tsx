@@ -1,8 +1,12 @@
 import React from 'react'
 
 import styles from './Products.module.css'
+import { IProduct } from '../interfaces/IProduct';
 
-export const Products = ({img, title, price}) => {
+
+
+
+export const Products = ({img, title, price}:IProduct) => {
   return (
     <div className={styles.container}>
         <img src={img} alt={title} />

@@ -1,5 +1,5 @@
 
-export const cardReducer = (state, action) => {
+export const cardReducer = (state:any, action:any) => {
 
     switch (action.type) {
         case "ADD_TO_VOTE":{
