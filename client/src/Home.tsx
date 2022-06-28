@@ -33,8 +33,19 @@ const Home: React.FC = () => {
   const [lista, setLista] = useState<any[] | null>(null)
   const [input, setInput] = useState('')
   const [votacion, setVotacion] = useState<votacion | null>(null)
-  const [cardProduct, setcardProduct] = useState<cardProduct | null>(null)
-  const [percentage, setPercentage] = useState<percentage | null>(null)
+  const [cardProduct, setcardProduct] = useState<cardProduct | null>({
+    productA: {
+    image:'',
+    title:'',
+    description:''
+  },
+  productB: {
+    image:'',
+    title:'',
+    description:''
+  },
+})
+  const [percentage, setPercentage] = useState<percentage | null>({perA:0, perB:0})
   const [btnState, setBtnState] = useState(false)
 
   

@@ -2,12 +2,22 @@ import express from 'express'
 import cors from 'cors'
 import { Server } from 'socket.io'
 import http from 'http'
-import { isStringObject } from 'util/types'
+import path from "path"
+import { fileURLToPath } from 'url';
 
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 const app = express()
 
-app.use(express.static( "public"))
+// app.use(express.static(path.join(__dirname, "client/dist")))
+app.use(express.static("./client/dist"))
+if (process.env.NODE_ENV === "production"){
+
+    
+}
+// console.log(__dirname)
+// console.log(path.join(__dirname, "client/dist"))
 
 const puerto = process.env.PORT || 3001
 
@@ -44,8 +54,8 @@ const products = {
 }
 
 const percentages ={
-    perA: 0,
-    perB: 0
+    perA: 0 || null,
+    perB: 0 || null
 }
 
 let pauseState = false
@@ -72,7 +82,7 @@ io.on('connection', socket => {
     socket.on('reset', () => {
         candidates.voteA = 0
         candidates.voteB = 0
-        percentages.perA = 0
+        percentages.perA = 0 
         percentages.perB = 0
         products.productA = {
             title: '',
@@ -113,9 +123,9 @@ io.on('connection', socket => {
             pA.load = true
         }
         
-        console.log('product recibido')
+       
         io.emit('item', products)
-        console.log(products)
+      
     })
 
     socket.on('connection', () => {
