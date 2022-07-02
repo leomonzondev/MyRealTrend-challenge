@@ -10,7 +10,7 @@ import { ICard, IProduct } from '../interfaces/IProduct';
 import { GrPowerReset } from 'react-icons/gr'
 import { GiPauseButton } from 'react-icons/gi'
 
-const socket = io("http://localhost:3001");
+const socket = io("https://realtrend-challenge.herokuapp.com:8080");
 
 
 
