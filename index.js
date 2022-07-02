@@ -54,8 +54,8 @@ const products = {
 }
 
 const percentages ={
-    perA: 0 || null,
-    perB: 0 || null
+    perA: 0 ,
+    perB: 0 
 }
 
 let pauseState = false
