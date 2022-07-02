@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "production"){
 // console.log(__dirname)
 // console.log(path.join(__dirname, "client/dist"))
 
-const puerto = process.env.PORT || 3001
+const puerto = 45561 || 3001
 
 
 const server = http.createServer(app)
