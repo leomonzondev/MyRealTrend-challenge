@@ -7,6 +7,8 @@ import CardState, { CardContext } from "./context/State";
 import styles from "./Home.module.css";
 import { Products } from "./Products";
 import { ICard, IProduct } from '../interfaces/IProduct';
+import { GrPowerReset } from 'react-icons/gr'
+import { GiPauseButton } from 'react-icons/gi'
 
 const socket = io("http://localhost:3001");
 
@@ -48,6 +50,7 @@ const Home: React.FC = () => {
   const [percentage, setPercentage] = useState<percentage | null>({perA:0, perB:0})
   const [btnState, setBtnState] = useState(false)
 
+  const voteValidator = ( cardProduct.productA.image === '' ) && ( cardProduct.productB.image === '' )
   
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value)
@@ -92,7 +95,7 @@ const Home: React.FC = () => {
   },[socket])
 
 
-  /*HANDLERS-HANDLERS-HANDLERS-HANDLERS-HANDLERS-HANDLERS-*/
+  /*Vote Handlers*/
 
   const reset = () => {
     socket.emit('reset')
@@ -108,7 +111,7 @@ const Home: React.FC = () => {
   }
 
   const vote = (index: number) => {
-    if(btnState === false) {
+    if(!voteValidator) {
       socket.emit('vote', index)
     }
   }
@@ -155,8 +158,8 @@ const Home: React.FC = () => {
 
 
         <div className={styles.controls}>
-          <button onClick={reset}>RESET</button>
-          <button onClick={pausa}>PAUSA/REANUDAR</button>
+          <button onClick={reset}><GrPowerReset size={32}/></button>
+          <button onClick={pausa}><GiPauseButton size={32}/></button>
         </div>
 
         <div className={`${ btnState ? styles.stop : ''  }`}>{ btnState && <h1>VOTACIÓN EN PAUSA</h1>}</div>
