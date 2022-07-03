@@ -103,6 +103,7 @@ const Home: React.FC = () => {
 
   const pausa = () => {
     socket.emit('pause', btnState)
+    console.log('pausa');
   }
 
   const selectItem = (clientProduct:any) => {

@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "production"){
 // console.log(__dirname)
 // console.log(path.join(__dirname, "client/dist"))
 
-const puerto = process.env.PORT || 3001
+const puerto = process.env.PORT || 45561
 
 
 const server = http.createServer(app)
@@ -28,7 +28,7 @@ app.use(cors())
 
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:3000',
+        origin: 'https://realtrend-challenge.herokuapp.com:45561',
         methods:['GET', 'POST']
     }
 })
