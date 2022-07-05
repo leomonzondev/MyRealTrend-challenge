@@ -28,7 +28,7 @@ app.use(cors())
 
 const io = new Server(server, {
     cors: {
-        origin: `https://realtrend-challenge.herokuapp.com:${puerto}` || 'http://localhost:45561',
+        origin: `https://realtrend-challenge.herokuapp.com:${puerto}`,
         methods:['GET', 'POST']
     }
 })

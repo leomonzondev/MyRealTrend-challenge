@@ -36,7 +36,7 @@ type propsForSearch = {
   price:number;
 }
 
-const socket = io("http://localhost:3000"||"https://realtrend-challenge.herokuapp.com:45561");
+const socket = io("https://realtrend-challenge.herokuapp.com");
 
 const Home: React.FC = () => {
 
