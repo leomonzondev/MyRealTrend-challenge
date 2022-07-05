@@ -10,12 +10,11 @@ import { ICard, IProduct } from '../interfaces/IProduct';
 import { GrPowerReset } from 'react-icons/gr'
 import { GiPauseButton } from 'react-icons/gi'
 
-// const socket = io("localhost:45561");
 
 
 
 type cardProduct = {
-
+  
   productA?: ICard;
   productB?: ICard;
 }
@@ -37,10 +36,11 @@ type propsForSearch = {
   price:number;
 }
 
+const socket = io("https://realtrend-challenge.herokuapp.com/");
 
 const Home: React.FC = () => {
 
-  const [lista, setLista] = useState < string[] | number[] | []>([])
+  const [lista, setLista] = useState < IProduct[] | null | []>([])
   const [input, setInput] = useState('')
   const [votacion, setVotacion] = useState<votacion | null>(null)
   const [cardProduct, setcardProduct] = useState<cardProduct | null>({
@@ -84,51 +84,51 @@ const Home: React.FC = () => {
   
   /*SOCKET-SOCKET-SOCKET-SOCKET-SOCKET-SOCKET-SOCKET*/
 
-  // useEffect(() => {
-  //   socket.emit('connection')
+  useEffect(() => {
+    socket.emit('connection')
     
-  //   socket.on('vote', candidates => {
-  //     setVotacion(candidates)
+    socket.on('vote', candidates => {
+      setVotacion(candidates)
 
-  //   })
+    })
 
-  //   socket.on('item', products => {
-  //     setcardProduct(products)
-  //   })
+    socket.on('item', products => {
+      setcardProduct(products)
+    })
 
-  //   socket.on('percentage', percentages => {
-  //     setPercentage(percentages)
-  //   })
+    socket.on('percentage', percentages => {
+      setPercentage(percentages)
+    })
 
-  //   socket.on('pause', btnState => {
-  //     setBtnState(btnState)
-  //   })
+    socket.on('pause', btnState => {
+      setBtnState(btnState)
+    })
 
     
-  // },[socket])
+  },[socket])
 
 
-  // /*Vote Handlers*/
+  /*Vote Handlers*/
 
-  // const reset = () => {
-  //   socket.emit('reset')
-  // }
+  const reset = () => {
+    socket.emit('reset')
+  }
 
-  // const pausa = () => {
-  //   socket.emit('pause', btnState)
-  //   console.log('pausa');
-  // }
+  const pausa = () => {
+    socket.emit('pause', btnState)
+    console.log('pausa');
+  }
 
-  // const selectItem = (clientProduct:any) => {
-  //   socket.emit('loadProduct', clientProduct)
+  const selectItem = (clientProduct:any) => {
+    socket.emit('loadProduct', clientProduct)
 
-  // }
+  }
 
-  // const vote = (index: number) => {
-  //   if(!voteValidator) {
-  //     socket.emit('vote', index)
-  //   }
-  // }
+  const vote = (index: number) => {
+    if(!voteValidator) {
+      socket.emit('vote', index)
+    }
+  }
 
 
 
@@ -171,8 +171,8 @@ const Home: React.FC = () => {
 
       <div className={`${styles.containerApp}  pt-5`}>
         <div className={`${styles.controls} flex gap-5`}>
-          <button ><GrPowerReset size={32}/></button>
-          <button ><GiPauseButton size={32}/></button>
+          <button onClick={reset} ><GrPowerReset size={32}/></button>
+          <button onClick={pausa} ><GiPauseButton size={32}/></button>
         </div>
 
         <div className={`${ btnState ? styles.stop : ''  }`}>{ btnState && <h1>VOTACIÓN EN PAUSA</h1>}</div>
