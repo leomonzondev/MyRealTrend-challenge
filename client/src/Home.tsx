@@ -8,7 +8,8 @@ import styles from "./Home.module.css";
 import { Products } from "./Products";
 import { ICard, IProduct } from '../interfaces/IProduct';
 import { IoReloadOutline,IoPauseOutline } from 'react-icons/io5'
-
+import { useSnackbar } from 'notistack'
+import { FilterPages } from "./components/FilterPages";
 
 
 
@@ -59,8 +60,22 @@ const Home: React.FC = () => {
   const [btnState, setBtnState] = useState(false)
   const [btnPage, setBtnPage] = useState(0)
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const voteValidator = ( cardProduct?.productA?.image === '' ) && ( cardProduct?.productB?.image === '' )
 
+  useEffect(() => {
+    console.log(`
+    ██╗     ███╗   ███╗   
+    ██║     ████╗ ████║   
+    ██║     ██╔████╔██║   
+    ██║     ██║╚██╔╝██║   
+    ███████╗██║ ╚═╝ ██║██╗
+    ╚══════╝╚═╝     ╚═╝╚═╝
+                          
+    `)
+    console.log('%c Happy Coding! 👻', 'color: white; background-color: black; padding:10px; border-radius:5px;font-family:sans-serif;font-size:14px;');
+  },[])
   
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value)
@@ -70,7 +85,7 @@ const Home: React.FC = () => {
     e.preventDefault()
     
     const search = () => {
-      fetch(`https://api.mercadolibre.com/sites/MLA/search?q=${input}&limit=5`)
+      fetch(`https://api.mercadolibre.com/sites/MLA/search?q=${input}&limit=16`)
       .then(res => res.json())
       .then(obj => setLista(obj.results))
     }
@@ -79,9 +94,7 @@ const Home: React.FC = () => {
   }
 
 
-  useEffect(() => {
-    console.log(lista);
-  },[lista])
+
   
   /*SOCKET-SOCKET-SOCKET-SOCKET-SOCKET-SOCKET-SOCKET*/
 
@@ -120,12 +133,12 @@ const Home: React.FC = () => {
 
   const pausa = () => {
     socket.emit('pause', btnState)
-    console.log('pausa');
+
   }
 
   const selectItem = (clientProduct:any) => {
     socket.emit('loadProduct', clientProduct)
-
+    enqueueSnackbar(` Product added for vote`, { variant: "success"})
   }
 
   const vote = (index: number) => {
@@ -133,6 +146,22 @@ const Home: React.FC = () => {
       socket.emit('vote', index)
     }
   }
+
+  useEffect(() => {
+    console.log(lista.slice(0,btnPage));
+  },[lista])
+
+  const productsPerPage = 4
+  const pagesVisited = btnPage * productsPerPage 
+
+  // const handlePage = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+
+  //   const name = e.target.name
+
+  //   if(name === 'izq' && btnPage > 1 ) setBtnPage(btnPage - 1 ) 
+  //   if(name === 'der' ) setBtnPage(btnPage + 1 ) 
+  //   console.log(lista, btnPage);
+  // }
 
 
 
@@ -156,11 +185,14 @@ const Home: React.FC = () => {
       <form className={`${styles.form} `} onSubmit={handleSearch}>
             <input placeholder='Search a product and select it to start ' onChange={handleInput} value={input} />
         </form>
-
+        {/* <div className='flex justify-center gap-4 text-xl py-4'>
+          <button name="izq" onClick={(e) => handlePage(e)}>{`<`}</button>
+          <button name="der" onClick={(e) => handlePage(e)}>{`>`}</button>
+        </div> */}
         {
-          lista && <div className="flex flex-col items-center gap-2  pt-7  ">
+          lista && <div className="flex flex-col items-center gap-2 pt-4  ">
             {
-              lista.map((product) => (
+              lista.slice(0,5).map((product:any) => (
               <div key={product.id} >
                 <Products img={product.thumbnail} product={product} selectItem={selectItem} title={product.title} price={product.price}/>
               </div>))
@@ -168,8 +200,8 @@ const Home: React.FC = () => {
           </div>
         }
 
-      <div className={`${styles.containerApp}  pt-5`}>
-        <div className={`text-[#71d8bf] flex gap-5`}>
+      <div className={`${styles.containerApp}  pt-5 `}>
+        <div className={`text-[#71d8bf] flex gap-5 z-50`}>
           <button onClick={reset}  ><IoReloadOutline size={30}/></button>
           <button onClick={pausa} ><IoPauseOutline size={32}/></button>
         </div>

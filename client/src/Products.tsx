@@ -8,7 +8,7 @@ type Props = {
   title: string;
   price:number;
   selectItem:Function;
-  product:string[];
+  product:IProduct[];
 }
 
 
