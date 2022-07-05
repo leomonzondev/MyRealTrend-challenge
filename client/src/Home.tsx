@@ -7,8 +7,8 @@ import CardState, { CardContext } from "./context/State";
 import styles from "./Home.module.css";
 import { Products } from "./Products";
 import { ICard, IProduct } from '../interfaces/IProduct';
-import { GrPowerReset } from 'react-icons/gr'
-import { GiPauseButton } from 'react-icons/gi'
+import { IoReloadOutline,IoPauseOutline } from 'react-icons/io5'
+
 
 
 
@@ -36,7 +36,7 @@ type propsForSearch = {
   price:number;
 }
 
-const socket = io("https://realtrend-challenge.herokuapp.com/");
+const socket = io("http://localhost:3000"||"https://realtrend-challenge.herokuapp.com:45561");
 
 const Home: React.FC = () => {
 
@@ -75,12 +75,13 @@ const Home: React.FC = () => {
       .then(obj => setLista(obj.results))
     }
     search()
+    
   }
 
 
-  // useEffect(() => {
-  //   console.log(lista);
-  // },[lista])
+  useEffect(() => {
+    console.log(lista);
+  },[lista])
   
   /*SOCKET-SOCKET-SOCKET-SOCKET-SOCKET-SOCKET-SOCKET*/
 
@@ -102,6 +103,7 @@ const Home: React.FC = () => {
 
     socket.on('pause', btnState => {
       setBtnState(btnState)
+      setLista([])
     })
 
     
@@ -112,6 +114,8 @@ const Home: React.FC = () => {
 
   const reset = () => {
     socket.emit('reset')
+    setInput('')
+    setLista([])
   }
 
   const pausa = () => {
@@ -138,11 +142,6 @@ const Home: React.FC = () => {
 
   },[votacion])
 
-  
- 
-
-
-
 
   return (
     <main className={styles.container}>
@@ -159,20 +158,20 @@ const Home: React.FC = () => {
         </form>
 
         {
-          lista && <div className="flex flex-col gap-2 px-10 pt-7 ">
+          lista && <div className="flex flex-col items-center gap-2  pt-7  ">
             {
               lista.map((product) => (
-              <div key={product.id} onClick={() => selectItem(product)} >
-                <Products img={product.thumbnail} title={product.title} price={product.price}/>
+              <div key={product.id} >
+                <Products img={product.thumbnail} product={product} selectItem={selectItem} title={product.title} price={product.price}/>
               </div>))
             }
           </div>
         }
 
       <div className={`${styles.containerApp}  pt-5`}>
-        <div className={`${styles.controls} flex gap-5`}>
-          <button onClick={reset} ><GrPowerReset size={32}/></button>
-          <button onClick={pausa} ><GiPauseButton size={32}/></button>
+        <div className={`text-[#71d8bf] flex gap-5`}>
+          <button onClick={reset}  ><IoReloadOutline size={30}/></button>
+          <button onClick={pausa} ><IoPauseOutline size={32}/></button>
         </div>
 
         <div className={`${ btnState ? styles.stop : ''  }`}>{ btnState && <h1>VOTACIÓN EN PAUSA</h1>}</div>
