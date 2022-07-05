@@ -24,12 +24,17 @@ Se debe crear una aplicación de votación realtime.
 
 ## Correr el proyecto
 ```bash
-## Instalar las dependencias del proyecto
-npm install
+## Instalar las dependencias del server
+npm i
 
-## Instalar las dependencias de los paquetes
-npm run bootstrap
+## Instalar las dependencias del cliente
+cd ./client 
+npm i
+
+## Modificar enlace de Socket io CLIENT to localhost:PORT
+
 
 ## Correr los paquetes
-npm run dev
+en clien > npm run dev 
+en root > nodemon
 ```

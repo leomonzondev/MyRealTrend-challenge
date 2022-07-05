@@ -10,7 +10,7 @@ import { ICard, IProduct } from '../interfaces/IProduct';
 import { GrPowerReset } from 'react-icons/gr'
 import { GiPauseButton } from 'react-icons/gi'
 
-const socket = io("https://realtrend-challenge.herokuapp.com");
+// const socket = io("localhost:45561");
 
 
 
@@ -30,9 +30,17 @@ type votacion = {
   voteB?: number;
 }
 
+
+type propsForSearch = {
+  img:string;
+  title: string;
+  price:number;
+}
+
+
 const Home: React.FC = () => {
 
-  const [lista, setLista] = useState<any[] | null>(null)
+  const [lista, setLista] = useState < string[] | number[] | []>([])
   const [input, setInput] = useState('')
   const [votacion, setVotacion] = useState<votacion | null>(null)
   const [cardProduct, setcardProduct] = useState<cardProduct | null>({
@@ -49,8 +57,10 @@ const Home: React.FC = () => {
 })
   const [percentage, setPercentage] = useState<percentage | null>({perA:0, perB:0})
   const [btnState, setBtnState] = useState(false)
+  const [btnPage, setBtnPage] = useState(0)
 
-  const voteValidator = ( cardProduct.productA.image === '' ) && ( cardProduct.productB.image === '' )
+  const voteValidator = ( cardProduct?.productA?.image === '' ) && ( cardProduct?.productB?.image === '' )
+
   
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value)
@@ -65,57 +75,60 @@ const Home: React.FC = () => {
       .then(obj => setLista(obj.results))
     }
     search()
-
   }
+
+
+  // useEffect(() => {
+  //   console.log(lista);
+  // },[lista])
   
   /*SOCKET-SOCKET-SOCKET-SOCKET-SOCKET-SOCKET-SOCKET*/
 
-
-  useEffect(() => {
-    socket.emit('connection')
+  // useEffect(() => {
+  //   socket.emit('connection')
     
-    socket.on('vote', candidates => {
-      setVotacion(candidates)
+  //   socket.on('vote', candidates => {
+  //     setVotacion(candidates)
 
-    })
+  //   })
 
-    socket.on('item', products => {
-      setcardProduct(products)
-    })
+  //   socket.on('item', products => {
+  //     setcardProduct(products)
+  //   })
 
-    socket.on('percentage', percentages => {
-      setPercentage(percentages)
-    })
+  //   socket.on('percentage', percentages => {
+  //     setPercentage(percentages)
+  //   })
 
-    socket.on('pause', btnState => {
-      setBtnState(btnState)
-    })
+  //   socket.on('pause', btnState => {
+  //     setBtnState(btnState)
+  //   })
 
     
-  },[socket])
+  // },[socket])
 
 
-  /*Vote Handlers*/
+  // /*Vote Handlers*/
 
-  const reset = () => {
-    socket.emit('reset')
-  }
+  // const reset = () => {
+  //   socket.emit('reset')
+  // }
 
-  const pausa = () => {
-    socket.emit('pause', btnState)
-    console.log('pausa');
-  }
+  // const pausa = () => {
+  //   socket.emit('pause', btnState)
+  //   console.log('pausa');
+  // }
 
-  const selectItem = (clientProduct:any) => {
-    socket.emit('loadProduct', clientProduct)
+  // const selectItem = (clientProduct:any) => {
+  //   socket.emit('loadProduct', clientProduct)
 
-  }
+  // }
 
-  const vote = (index: number) => {
-    if(!voteValidator) {
-      socket.emit('vote', index)
-    }
-  }
+  // const vote = (index: number) => {
+  //   if(!voteValidator) {
+  //     socket.emit('vote', index)
+  //   }
+  // }
 
 
 
@@ -124,6 +137,8 @@ const Home: React.FC = () => {
     setPercentage({perA: votacion?.voteA! / (votacion?.voteA! + votacion?.voteB! ) * 100 , perB: votacion?.voteB! / (votacion?.voteA! + votacion?.voteB!) * 100 })
 
   },[votacion])
+
+  
  
 
 
@@ -131,7 +146,7 @@ const Home: React.FC = () => {
 
   return (
     <main className={styles.container}>
-      <header className={styles.header}>
+      <header className={`${styles.header} flex flex-col items-center pt-20 pb-4`}>
         <h1>
           <img alt="RealTrends" src={logo} width={180} />
         </h1>
@@ -139,14 +154,14 @@ const Home: React.FC = () => {
       </header>
 
 
-      <form className={styles.form} onSubmit={handleSearch}>
-            <input placeholder='Seleccione producto A' onChange={handleInput} value={input} />
+      <form className={`${styles.form} `} onSubmit={handleSearch}>
+            <input placeholder='Search a product and select it to start ' onChange={handleInput} value={input} />
         </form>
 
         {
-          lista && <div className={styles.searcherContainer}>
+          lista && <div className="flex flex-col gap-2 px-10 pt-7 ">
             {
-              lista.map((product: IProduct) => (
+              lista.map((product) => (
               <div key={product.id} onClick={() => selectItem(product)} >
                 <Products img={product.thumbnail} title={product.title} price={product.price}/>
               </div>))
@@ -154,13 +169,10 @@ const Home: React.FC = () => {
           </div>
         }
 
-      <div className={styles.containerApp}>
-
-
-
-        <div className={styles.controls}>
-          <button onClick={reset}><GrPowerReset size={32}/></button>
-          <button onClick={pausa}><GiPauseButton size={32}/></button>
+      <div className={`${styles.containerApp}  pt-5`}>
+        <div className={`${styles.controls} flex gap-5`}>
+          <button ><GrPowerReset size={32}/></button>
+          <button ><GiPauseButton size={32}/></button>
         </div>
 
         <div className={`${ btnState ? styles.stop : ''  }`}>{ btnState && <h1>VOTACIÓN EN PAUSA</h1>}</div>
@@ -189,7 +201,7 @@ const Home: React.FC = () => {
 
         
           <div className={styles.full}>
-          <div className={styles.percentage}  style={{ height: `${percentage!.perB}%`, backgroundColor: `hsl(${percentage!.perB}, 100%, 50%)`}} ></div>
+          <div className={styles.percentage} style={{ height: `${percentage!.perB}%`, backgroundColor: `hsl(${percentage!.perB}, 100%, 50%)`}} ></div>
             <div className={styles.card}>
 
               <h1>{cardProduct!.productB?.title ? cardProduct!.productB?.title : 'Product B title'}</h1>
